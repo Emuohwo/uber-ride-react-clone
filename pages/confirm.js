@@ -17,14 +17,14 @@ function Confirm() {
 
 
 
-    const [pickupCoordinates, setPickupCoordinates] = useState()
-    const [dropoffCoordinates, setDropoffCoordinates] = useState()
+    const [pickupCoordinates, setPickupCoordinates] = useState([0, 0])
+    const [dropoffCoordinates, setDropoffCoordinates] = useState([0, 0])
     
     const getPickupCoordinates = (pickup) => {
         // 
         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${pickup}.json?` + 
             new URLSearchParams({
-                access_token: 'pk.eyJ1IjoiZW11b2h3byIsImEiOiJja3ZuMG82cGIxMG45MnhvNTQ3eDI0OWt2In0.Ky1aojkgMMEQvZoyDHrO7g',
+                access_token: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
                 limit: 1
             })
         )
@@ -40,7 +40,7 @@ function Confirm() {
         // 
         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${dropoff}.json?` + 
             new URLSearchParams({
-                access_token: 'pk.eyJ1IjoiZW11b2h3byIsImEiOiJja3ZuMG82cGIxMG45MnhvNTQ3eDI0OWt2In0.Ky1aojkgMMEQvZoyDHrO7g',
+                access_token: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
                 limit: 1
             })
         )
@@ -72,7 +72,10 @@ function Confirm() {
             </BackBtnContainer>
 
             <RideContainer>
-                <RideSelector />
+                <RideSelector
+                    pickupCoordinates={pickupCoordinates}
+                    dropoffCoordinates={dropoffCoordinates} 
+               />
                 <ConfirmButtonContainer>
                     <ConfirmButton>
                         Confirm UberX
@@ -87,7 +90,7 @@ function Confirm() {
 export default Confirm;
 
 const BackButton = tw.img`
-h-10 bg-gray-50 rounded-full
+h-10 bg-gray-50 rounded-full shadow-md cursor-pointer object-contain
 `
 
 const BackBtnContainer =  tw.div`
